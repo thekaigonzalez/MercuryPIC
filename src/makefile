@@ -1,6 +1,6 @@
 SOURCES=mbyte.c mpool.c mcpu.c mreg.c mctx.c mrunl.c msec.c mrt.c msyscalls.c
 WIZARD=wiz/wArgParser.c wiz/wFlag.c wiz/wMem.c wiz/wName.c wiz/wOptions.c wiz/wStraggly.c wiz/wValue.c -Iwiz
-DEBUG=-g
+DEBUG=-O2
 WARNS=-Wall
 
 all:
