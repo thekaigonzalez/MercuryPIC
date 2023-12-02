@@ -47,7 +47,7 @@ MPoolAlloc (MMemoryPool *pool, int size)
                                      sizeof (void *) * pool->capacity * 2);
       pool->capacity *= 2;
     }
-  void *mem_ptr = malloc (size);
+  void *mem_ptr = malloc (size * sizeof (void *));
 
   if (!mem_ptr)
     {
