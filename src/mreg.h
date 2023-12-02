@@ -13,7 +13,7 @@ typedef struct MReg MReg;
 struct MReg
 {
   /* contains held data for a simple byte-sized register */
-  byte data[MERC_REGISTER_BYTE_MAX];
+  int data[MERC_REGISTER_BYTE_MAX];
 
   /* the position of the register, put commands do not affect this*/
   int position;
