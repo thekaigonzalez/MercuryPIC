@@ -4,3 +4,4 @@ mpic
 mtest
 .vscode
 *.mc
+mpic32
