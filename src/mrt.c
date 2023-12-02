@@ -11,7 +11,10 @@ mrt_echo (MCpu *cpu, MContext *ctx)
     }
   byte out = MContextGet (ctx, 1);
 
-  printf ("%c", out);
+  char n  = (int)out;
+
+  printf("%c",n);
+
   return 0;
 }
 
@@ -288,19 +291,21 @@ mrt_rcl (MCpu *cpu, MContext *ctx)
 {
   // print all contenbts of a register, as a number
 
-  if (MContextSize (ctx) < 3) {
-    fprintf (stderr, "m8: RCL instruction: not enough arguments\n");
-    return 1;
-  }
+  if (MContextSize (ctx) < 3)
+    {
+      fprintf (stderr, "m8: RCL instruction: not enough arguments\n");
+      return 1;
+    }
 
   int reg = (int)MContextGet (ctx, 1);
   int at = (int)MContextGet (ctx, 2);
 
   MReg *rcpu = &cpu->registers[reg];
 
-  if (rcpu) {
-    printf("%d", MRegisterAtPosition (rcpu, at));
-  }
+  if (rcpu)
+    {
+      printf ("%d", MRegisterAtPosition (rcpu, at));
+    }
   return 0;
 }
 
