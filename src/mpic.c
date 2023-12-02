@@ -22,6 +22,12 @@ pic_main (int argc, char **argv)
       argw_exit(0);
     }
 
+  if (wArgParserError (parser))
+    {
+      printf("mpic: fatal: option not recognized\n");
+      argw_exit(1);
+    }
+
   char *filename = argw_positional (0);
 
   if (!filename)
@@ -31,6 +37,7 @@ pic_main (int argc, char **argv)
 
     argw_exit(1);
     }
+    
 
   if (wArgParserStragglyCount (parser) > 1)
     {
