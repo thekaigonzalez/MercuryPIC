@@ -4,6 +4,9 @@
 
 #include <argw.h>
 
+#include <stdint.h>
+#include <stdlib.h>
+
 int
 pic_main (int argc, char **argv)
 {
@@ -19,13 +22,13 @@ pic_main (int argc, char **argv)
   if (wArgParserHelpWanted (parser))
     {
       argw_usage ("[options...] filename");
-      argw_exit(0);
+      argw_exit (0);
     }
 
   if (wArgParserError (parser))
     {
-      printf("mpic: fatal: option not recognized\n");
-      argw_exit(1);
+      printf ("mpic: fatal: option not recognized\n");
+      argw_exit (1);
     }
 
   char *filename = argw_positional (0);
@@ -35,24 +38,65 @@ pic_main (int argc, char **argv)
       printf ("mpic: fatal: no input file specified\n");
       printf ("type `mpic -h' for help\n");
 
-    argw_exit(1);
+      argw_exit (1);
     }
-    
 
   if (wArgParserStragglyCount (parser) > 1)
     {
       printf ("mpic: fatal: more than one input file specified\n");
       printf ("type `mpic -h' for help\n");
-      argw_exit(1);
+      argw_exit (1);
     }
 
   // end of argw
-  FILE *f = fopen (filename, "r");
+  FILE *file = fopen (filename, "r");
 
-  if (!f)
+  if (!file)
+    {
+      fprintf (stderr, "Error opening file\n");
+      return 1;
+    }
+
+  fseek (file, 0, SEEK_END);
+
+  long file_size = ftell (file);
+
+  fseek (file, 0, SEEK_SET);
+
+  if (file_size % 4 != 0)
+    {
+      fprintf (stderr, "mpic: fatal: invalid file alignment\n");
+      fclose (file);
+      return 1;
+    }
+
+  MMemoryPool *pool = MPoolCreate ();
+
+  MByteList *list = MByteListNew (pool);
+
+  size_t num_integers = file_size / 4;
+
+  uint32_t *buffer = (uint32_t *)malloc (file_size);
+
+  if (!buffer)
+    {
+      printf ("mpic: fatal: out of memory\n");
+      fclose (file);
+      argw_exit (1);
+    }
+
+  /* read the 4-spaced file */
+  fread (buffer, sizeof(uint32_t), num_integers, file);
+
+  for (uint32_t i = 0; i < num_integers; i++)
+    {
+      MByteListAdd (list, buffer[i]);
+    }
+
+  if (!file)
     {
       printf ("mpic: fatal: could not open `%s'\n", filename);
-      argw_exit(1);
+      argw_exit (1);
     }
 
   MCpu cpu;
@@ -61,21 +105,15 @@ pic_main (int argc, char **argv)
   if (!wValueBoolean (wFlagValue (no_runtime)))
     MRTAddRuntime (&cpu);
 
-  MByteList *list = MByteListNew (cpu.blk);
-
-  char c;
-  while ((c = fgetc (f)) != EOF)
-    {
-      MByteListAdd (list, c);
-    }
-
-  fclose (f);
-
   MRunByteList (&cpu, list);
 
   MCpuDestroy (&cpu);
+  MPoolDestroy (pool);
 
-  argw_exit(0);
+  free (buffer);
+  fclose (file);
+
+  argw_exit (0);
 }
 
 int
