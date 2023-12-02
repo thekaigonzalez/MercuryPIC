@@ -6,6 +6,11 @@ Mercury PIC
   NexFUSE format, provides low-level abstractions which allow for performant
   binary programs made for the NexFUSE family of formats.
 
+  to compile Mercury binaries using VOLT, use the -Wmercury option, mercury
+  files are not compatible with NexFUSE or OpenLUD, due to line endings being
+  different. Meaning that you are not able to use `runfuse' and `mpic' with
+  MercuryPIC.
+
   To see the real differences, compile this program, then run the examples with
   both `runfuse' and `mpic', and compare their valgrind memory usage.
 
