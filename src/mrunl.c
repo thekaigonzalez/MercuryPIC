@@ -99,14 +99,14 @@ MRunByteList (MCpu *cpu, MByteList *list)
     }
 
   MAddSyscall (cpu, 0xEE, merc_sys_write);
+  MAddSyscall (cpu, 0xEF, merc_sys_shift0);
 
   _Bool inside_subroutine = false;
   _Bool clean_end = false;
-
   for (int i = 0; i < MByteListGetSize (list); i++)
     {
       byte current = MByteListGet (list, i);
-
+      
       if (inside_subroutine == true)
         {
           if (current == ENDSUB)
@@ -159,6 +159,7 @@ MRunByteList (MCpu *cpu, MByteList *list)
             {
               int (*func) (MCpu *, MContext *)
                   = MCpuGetByteOpFunction (cpu, MByteListGet (tmp, 0));
+
               if (!func)
                 {
                   fprintf (stderr, "m8: instruction not found: `%d'\n",
