@@ -11,6 +11,10 @@ Mercury PIC
   different. Meaning that you are not able to use `runfuse' and `mpic' with
   MercuryPIC.
 
+  you can use `--disable-runtime' to execute MercuryPIC binaries without any
+  standard instruction set. However, any internal system calls will still be
+  available.
+
   To see the real differences, compile this program, then run the examples with
   both `runfuse' and `mpic', and compare their valgrind memory usage.
 
@@ -23,10 +27,5 @@ Mercury PIC
 
         total heap usage: 1,366 allocs, 1,366 frees, 59,233 bytes allocated
         ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
-  * blazingly fast 🔥
-  * 100% compatible with NexFUSE
-  * very small memory footprint
-  * very fast (so important we had to put it twice)
 
   https://github.com/thekaigonzalez/MercuryPIC
