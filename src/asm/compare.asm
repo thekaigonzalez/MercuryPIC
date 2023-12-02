@@ -1,6 +1,6 @@
 ; $Id: compare.asm
 
-[compat nexfuse] ; actually MercuryPIC
+[compat mercury] ; actually MercuryPIC
 
 t:
   echo 'A'

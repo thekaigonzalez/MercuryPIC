@@ -1,6 +1,6 @@
 ; $Id: gettest.asm
 
-[compat nexfuse] ; well, we're actually using MercuryPIC, but it's
+[compat mercury] ; well, we're actually using MercuryPIC, but it's
                  ; compatible with NexFUSE
 
 m:
