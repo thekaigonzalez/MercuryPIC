@@ -5,4 +5,4 @@ WARNS=-Wall
 
 all:
 	gcc mtest.c -o mtest $(SOURCES) $(WARNS) $(DEBUG)
-	gcc mpic.c -o mpic $(SOURCES) $(WARNS) $(DEBUG) $(WIZARD)
+	gcc mpic.c -o mpic32 $(SOURCES) $(WARNS) $(DEBUG) $(WIZARD)
