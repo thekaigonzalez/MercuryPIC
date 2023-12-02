@@ -7,7 +7,7 @@
 void
 MRegisterInitialize (MReg *reg)
 {
-  memset (reg->data, 0, MERC_REGISTER_BYTE_MAX);
+  memset (reg->data, 0, MERC_REGISTER_BYTE_MAX * sizeof (int));
   reg->position = 0;
   reg->locked = false;
   reg->owner = 0;
