@@ -1,5 +1,12 @@
 ; $Id: sycall.asm
 
+; SYSCALLS are only supported in MercuryPIC,
+; syscalls are ways to call functions in which are not prepended by the Mercury
+; Runtime.
+; these are good for performance, when raw data handling is needed
+
+[compat mercury]
+
 m:
   mov R1,'A'
   mov R1,'B'
