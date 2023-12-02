@@ -14,10 +14,10 @@ MByteList *
 MByteListNew (MMemoryPool *pool)
 {
   MByteList *list = MPoolAlloc (pool, sizeof (MByteList));
-  list->list = MPoolAlloc (pool, MERC_MEMORY_POOLING_SIZE);
+  list->list = MPoolAlloc (pool, MERC_MEMORY_POOLING_SIZE * sizeof (byte));
   list->pool_inherited = pool;
   list->size = 0;
-  list->cap = MERC_MEMORY_POOLING_SIZE;
+  list->cap = MERC_MEMORY_POOLING_SIZE * sizeof (byte);
 
   return list;
 }
@@ -27,9 +27,9 @@ MByteListClear (MByteList *list)
 {
   if (list)
     {
-      memset (list->list, 0, list->cap);
+      memset (list->list, 0, list->cap * sizeof (byte));
       list->size = 0;
-      list->cap = MERC_MEMORY_POOLING_SIZE;
+      list->cap = MERC_MEMORY_POOLING_SIZE * sizeof (byte);
     }
 }
 
@@ -39,7 +39,8 @@ MByteListAdd (MByteList *list, byte b)
   if (list->size >= list->cap)
     {
       list->cap *= 2;
-      list->list = MPoolRealloc (list->pool_inherited, list->list, list->cap);
+      list->list = MPoolRealloc (list->pool_inherited, list->list,
+                                 list->cap * sizeof (byte));
     }
 
   list->list[list->size] = b;
@@ -51,9 +52,9 @@ MByteListCopy (MByteList *list)
 {
   if (list)
     {
-      byte *copy = MPoolAlloc (list->pool_inherited, list->size + 1);
+      byte *copy = MPoolAlloc (list->pool_inherited, (list->size + 1) * sizeof (byte));
 
-      memcpy (copy, list->list, list->size);
+      memcpy (copy, list->list, list->size * sizeof (byte));
 
       return copy;
     }
@@ -74,9 +75,10 @@ MByteListGetSize (MByteList *list)
 byte
 MByteListGet (MByteList *list, int position)
 {
-  if (list && position >= 0 && position < list->size) {
-    return list->list[position];
-  }
+  if (list && position >= 0 && position < list->size)
+    {
+      return list->list[position];
+    }
 
   return -127;
 }
