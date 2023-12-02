@@ -5,7 +5,7 @@
 void
 MSectionInitialize (MSection *sec)
 {
-  memset (sec->data, 0, MERC_SECTION_BYTE_MAX);
+  memset (sec->data, 0, MERC_SECTION_BYTE_MAX * sizeof (byte));
   sec->position = 0;
 }
 
