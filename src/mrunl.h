@@ -6,7 +6,6 @@
 /*execute bytecode*/
 
 #include "mdef.h"
-#include "msys.h"
 #include "mcpu.h"
 #include "mpool.h"
 #include "mctx.h"
