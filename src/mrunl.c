@@ -1,5 +1,6 @@
 #include "mrunl.h"
 #include "mdef.h"
+#include "msyscalls.h"
 
 int
 MCpuGoSub (MCpu *cpu, MContext *ctx)
@@ -71,6 +72,16 @@ MCpuCompare (MCpu *cpu, MContext *ctx)
   return 0;
 }
 
+int
+MCpuInterrupt (MCpu *cpu, MContext *ctx)
+{
+  // calls syscall
+  MSysCallFind (cpu, MContextGet (ctx, 2))
+      ->function (&cpu->registers[(int)MContextGet (ctx, 1)], cpu);
+
+  return 0;
+}
+
 byte
 MRunByteList (MCpu *cpu, MByteList *list)
 { /*execute bytecode*/
@@ -79,11 +90,15 @@ MRunByteList (MCpu *cpu, MByteList *list)
   int shift = 0; /* how many bytes we've already read */
 
   /* builtin functions */
-  if (!MCpuGetByteOpFunction (cpu, GOSUB) && !MCpuGetByteOpFunction (cpu, CMP))
+  if (!MCpuGetByteOpFunction (cpu, GOSUB) && !MCpuGetByteOpFunction (cpu, CMP)
+      && !MCpuGetByteOpFunction (cpu, INT))
     {
       MCpuAddByteOp (cpu, GOSUB, MCpuGoSub);
       MCpuAddByteOp (cpu, CMP, MCpuCompare);
+      MCpuAddByteOp (cpu, INT, MCpuInterrupt);
     }
+
+  MAddSyscall (cpu, 0xEE, merc_sys_write);
 
   _Bool inside_subroutine = false;
   _Bool clean_end = false;
