@@ -1,0 +1,27 @@
+Mercury PIC
+
+  a bytecode format designed to be 100% ABI compatible with NexFUSE
+
+  MercuryPIC has very small memory footprint, being 100% compatible with the
+  NexFUSE format, provides low-level abstractions which allow for performant
+  binary programs made for the NexFUSE family of formats.
+
+  To see the real differences, compile this program, then run the examples with
+  both `runfuse' and `mpic', and compare their valgrind memory usage.
+
+  in NexFUSE's `algo.asm':
+
+        total heap usage: 8,021 allocs, 8,021 frees, 287,951 bytes allocated
+        ERROR SUMMARY: 2059 errors from 16 contexts (suppressed: 0 from 0)
+
+  in MercuryPIC:
+
+        total heap usage: 1,366 allocs, 1,366 frees, 59,233 bytes allocated
+        ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+  * blazingly fast 🔥
+  * 100% compatible with NexFUSE
+  * very small memory footprint
+  * very fast (so important we had to put it twice)
+
+  https://github.com/thekaigonzalez/MercuryPIC
