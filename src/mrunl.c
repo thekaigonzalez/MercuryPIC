@@ -106,7 +106,7 @@ MRunByteList (MCpu *cpu, MByteList *list)
   for (int i = 0; i < MByteListGetSize (list); i++)
     {
       byte current = MByteListGet (list, i);
-      
+
       if (inside_subroutine == true)
         {
           if (current == ENDSUB)
@@ -120,8 +120,15 @@ MRunByteList (MCpu *cpu, MByteList *list)
                 {
                   MByteListAdd (body, MByteListGet (tmp, j));
                 }
-
-              MSection *lbl = &cpu->sections[(int)MByteListGet (tmp, 0)];
+              byte indx = (int)MByteListGet (tmp, 0);
+              if (indx > MERC_SECTION_MAX)
+                {
+                  fprintf (stderr, "mpic: label out of range: `%d'\n", indx);
+                  fprintf (stderr, "mpic: note: max is `%d'\n",
+                           MERC_SECTION_MAX);
+                  exit (1);
+                }
+              MSection *lbl = &cpu->sections[indx];
 
               if (!lbl)
                 {
@@ -129,6 +136,15 @@ MRunByteList (MCpu *cpu, MByteList *list)
                            MByteListGet (tmp, 0));
                   exit (1);
                 }
+
+              MSectionInitialize (lbl);
+
+              if (!MByteListCopy (body))
+                {
+                  fprintf (stderr, "m8: out of memory\n");
+                  exit (1);
+                }
+
               MSectionAppend (lbl, MByteListCopy (body),
                               MByteListGetSize (body));
 
