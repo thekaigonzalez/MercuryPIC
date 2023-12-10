@@ -10,6 +10,13 @@ Mercury PIC
   only supports 8-bit character sets, so A-Za-z 0-9, and 0-255 are the only
   valid characters.
 
+  To verify your bytecode, depending on your compiler, you may need to use it's
+  analyzer, for example, the VOLT compiler contains a sub-project which contains
+  a bytecode analyzer that will verify the integrity of your generated code and
+  ensure everything works how it should. Basically the intermediate stage of the
+  compiler, but further spread apart which allows you to run the code and also
+  verify it in whichever chronological order you prefer.
+
   Both branches come with their own benefits, as both can be modified, however,
   this branch can easily resize based on the `byte' macro, since every
   functionality is now bound to it, and values are not hard-coded within MPIC.
