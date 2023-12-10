@@ -63,7 +63,7 @@ pic_main (int argc, char **argv)
 
   fseek (file, 0, SEEK_SET);
 
-  if (file_size % 4 != 0)
+  if (file_size % sizeof(byte) != 0)
     {
       fprintf (stderr, "mpic: fatal: invalid file alignment\n");
       fclose (file);
@@ -76,7 +76,7 @@ pic_main (int argc, char **argv)
 
   size_t num_integers = file_size / 4;
 
-  uint32_t *buffer = (uint32_t *)malloc (file_size);
+  byte *buffer = (byte *)malloc (file_size);
 
   if (!buffer)
     {
@@ -86,7 +86,7 @@ pic_main (int argc, char **argv)
     }
 
   /* read the 4-spaced file */
-  fread (buffer, sizeof(uint32_t), num_integers, file);
+  fread (buffer, sizeof(byte), num_integers, file);
 
   for (uint32_t i = 0; i < num_integers; i++)
     {
