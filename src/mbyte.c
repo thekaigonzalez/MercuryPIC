@@ -52,7 +52,8 @@ MByteListCopy (MByteList *list)
 {
   if (list)
     {
-      byte *copy = MPoolAlloc (list->pool_inherited, (list->size + 1) * sizeof (byte));
+      byte *copy = MPoolAlloc (list->pool_inherited,
+                               (list->size + 1) * sizeof (byte));
 
       memcpy (copy, list->list, list->size * sizeof (byte));
 
